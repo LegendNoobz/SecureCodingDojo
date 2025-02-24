@@ -24,6 +24,9 @@ app.config(function($routeProvider) {
     }).when("/activity", {
         templateUrl : "static/activity.html",
         controller: "activityCtrl"
+    }).when("/rank", {
+        templateUrl : "static/rank.html",
+        controller: "rankCtrl"
     }).when("/dashboard", {
         templateUrl : "static/dashboard.html",
         controller: "dashboardCtrl"
@@ -193,6 +196,29 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
                 }
             });
     }
+
+    $scope.fetchUserScores = function () {
+       
+        // Ambil data skor pengguna
+        $http.get('/api/users/scores', window.getAjaxOpts())
+            .then(function (response) {
+                if (response != null && response.data != null) {
+                    // Simpan data skor di scope
+                    $scope.userScores = response.data;
+                    console.log(response.data);
+    
+                    // Jika ingin menampilkan di console:
+                    console.log("User Scores:", $scope.userScores);
+                }
+            })
+            .catch(function (error) {
+                console.error("Error fetching user scores:", error.data);
+            });
+    };
+    
+    // Panggil fungsi fetchUserScores di awal untuk memastikan data di-load saat aplikasi dijalankan
+    $scope.fetchUserScores();
+    
 
     $scope.onUserTeamChange = function(){
         if($scope.teamList!==null && typeof userTeamListChoice !== "undefined" && userTeamListChoice.value!==""){

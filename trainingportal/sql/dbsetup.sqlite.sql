@@ -33,6 +33,16 @@ CREATE TABLE users (
   accountId CHAR(255) NOT NULL UNIQUE,
   teamId INTEGER unsigned,
   familyName CHAR(255),
-  givenName CHAR(255)
+  givenName CHAR(255),
+  score INTEGER DEFAULT 0
 );
 
+CREATE TRIGGER update_user_score_after_challenge
+AFTER INSERT ON challengeEntries
+FOR EACH ROW
+BEGIN
+  UPDATE users SET score = score + 15 WHERE id = NEW.userid AND NEW.challengeId LIKE '%codereview%';
+  UPDATE users SET score = score + 25 WHERE id = NEW.userid AND NEW.challengeId LIKE '%crypto%';
+  UPDATE users SET score = score + 45 WHERE id = NEW.userid AND NEW.challengeId LIKE '%cwe%';
+  UPDATE users SET score = score + 55 WHERE id = NEW.userid AND NEW.challengeId LIKE '%owasp2017%';
+END;

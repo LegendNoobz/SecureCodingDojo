@@ -512,7 +512,29 @@ app.get('/api/users',  (req, res) => {
    db.fetchUsers(null, function(users){
      res.send(users);
    });
+  // res.send("babi");
 });
+
+
+// app.get('/api/users/scores',  (req, res) => {
+//   var scoreList=10;
+//   res.json(scoreList);
+//   console.log("serper")
+//  // res.send("babi");
+// });
+//get score
+app.get('/api/users/scores', (req, res) => {
+  const limit = 10; // Limit default, bisa disesuaikan
+  db.fetchUserScores(limit, (err, scoreList) => {
+      if (err) {
+          console.error("Database error:", err);
+          return res.status(500).json({ error: "Internal Server Error" });
+      }
+      res.json(scoreList); // Kirim data ke client
+  });
+});
+
+
 
 
 //creates a team setting the current user as owner of the team

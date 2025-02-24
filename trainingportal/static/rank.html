@@ -1,0 +1,35 @@
+<div class="container-fluid">
+    <p>Rank of Participants</p>
+    <form ng-submit="fetchUserScores()">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Filter by name" id="nameFilter" ng-model="nameFilter" role="searchbox">
+            <div class="input-group-btn">
+                <button type="submit" class="btn btn-primary" role="search">
+                    <span class="oi oi-magnifying-glass"></span>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>User</th>
+                <th>Team</th>
+                <th>Score</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="scoreEntry in scoreList">
+                <td>{{ scoreEntry.rank }}</td>
+                <td>{{ scoreEntry.accountId }}</td>  <!-- Sekarang pakai scoreEntry.accountId -->
+                <td>{{ scoreEntry.teamName || 'No Team' }} </td>
+                <td>{{ scoreEntry.score }}</td>  <!-- Sekarang pakai scoreEntry.score -->
+                
+            </tr>
+        </tbody>
+    </table>
+</div>
+

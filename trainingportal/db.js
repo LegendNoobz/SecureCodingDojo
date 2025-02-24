@@ -260,9 +260,9 @@ let initSync = async() => {
 //Creates a user in the database
 insertUser = function(user,errCb,doneCb){
   var con = getConn();
-  var sql = "INSERT INTO users (id, accountId, teamId, familyName, givenName) VALUES (null, ?, ?, ?, ?)";
+  var sql = "INSERT INTO users (id, accountId, teamId, familyName, givenName, score) VALUES (null, ?, ?, ?, ?)";
   
-  con.query(sql, [user.accountId, user.teamId, user.familyName, user.givenName], function (err, result) {
+  con.query(sql, [user.accountId, user.teamId, user.familyName, user.givenName, user.score], function (err, result) {
     if (err) handleErr(errCb,err);
     else handleDone(doneCb,result);
   });
@@ -387,6 +387,7 @@ fetchTeams = function(errCb,doneCb){
     }
   });
 };
+
 
 //fetches a team and its members from the database by its name (unique)
 getTeamWithMembersByName = function(name,errCb,doneCb){
@@ -579,6 +580,34 @@ fetchActivity = function(query,limit,errCb,doneCb){
     }
   });
 };
+
+// Fetches the list of user scores from the database, ordered by highest score
+fetchUserScores = function (limit, doneCb) {
+  const con = getConn(); // Dapatkan koneksi database
+  const sql = `
+      SELECT 
+          RANK() OVER (ORDER BY users.score DESC) AS rank, 
+          users.accountId, 
+          users.score, 
+          teams.name AS teamName 
+      FROM users
+      LEFT JOIN teams ON users.teamID = teams.id 
+      ORDER BY users.score DESC 
+      LIMIT ?`; // Query SQL
+
+  con.query(sql, [limit], (err, rows) => { // Gunakan `.all()` untuk mendapatkan banyak baris
+      if (err) {
+          console.error("Database error:", err);
+          return doneCb(err, null); // Kirim error ke callback
+      }
+      doneCb(null, rows); // Kirim hasil ke callback
+  });
+
+  
+};
+
+
+
 /**
  * Fetches the challenge stats
  * @param {*} errCb 
@@ -659,6 +688,7 @@ module.exports = {
   fetchTeams,
   fetchUsers,
   fetchUsersWithId,
+  fetchUserScores,
   init,
   initSync,
   insertBadge,
