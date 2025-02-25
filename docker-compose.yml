@@ -6,11 +6,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.3"
-          memory: 256M
+          cpus: "4"
+          memory: 8G
         reservations:
-          cpus: "0.3"
-          memory: 256M
+          cpus: "2"
+          memory: 2G
     build:
       context: ./insecureinc
       dockerfile: Dockerfile.insecureinc
@@ -27,11 +27,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.3"
-          memory: 256M
+          cpus: "4"
+          memory: 8G
         reservations:
-          cpus: "0.3"
-          memory: 256M
+          cpus: "2"
+          memory: 2G
     restart: "always" #change to always if you want the image to auto start
     build:
       context: ./trainingportal
@@ -53,11 +53,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.1"
-          memory: 128M
+          cpus: "2"
+          memory: 4G
         reservations:
-          cpus: "0.1"
-          memory: 128M
+          cpus: "1"
+          memory: 2G
     build:
       context: ./hackerden
       dockerfile: Dockerfile.host1
@@ -74,11 +74,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.1"
-          memory: 128M
+          cpus: "2"
+          memory: 4G
         reservations:
-          cpus: "0.1"
-          memory: 128M
+          cpus: "1"
+          memory: 2G
     build:
       context: ./hackerden
       dockerfile: Dockerfile.host2
@@ -95,11 +95,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.2"
-          memory: 128M
+          cpus: "2"
+          memory: 4G
         reservations:
-          cpus: "0.2"
-          memory: 128M
+          cpus: "1"
+          memory: 2G
     build:
       context: ./hackerden
       dockerfile: Dockerfile.front
